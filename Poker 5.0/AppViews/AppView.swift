@@ -10,6 +10,7 @@ import SwiftUI
 
 struct AppView: View {
 	
+    @EnvironmentObject var gameModel: GamePlayModel
 	@ObservedObject var viewModel: AppViewModel
 	
     var body: some View {
@@ -50,14 +51,16 @@ struct AppView: View {
 			Button(action: { self.viewModel.appState = .home}, label: {
 				Text("Cancel")
 			})
-			Button(action: { self.viewModel.appState = .inGame}, label: {
+			Button(action: {
+                    self.gameModel.startGame(numberOfPlayers: self.viewModel.numberOfPlayers, chipCount: 1000)
+                    self.viewModel.appState = .inGame}, label: {
 				Text("Start Game")
 			})
 		}
 	}
 	
 	var gameView: some View {
-		GamePlayView(gamePlayModel: GamePlayModel(numberOfPlayers: viewModel.numberOfPlayers, chipCount: 1000))
+        GamePlayView(tableModel: gameModel.table)
 	}
 }
 

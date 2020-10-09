@@ -7,10 +7,14 @@
 //
 
 import Foundation
+import Combine
 
-struct CardData: Hashable {
+class Card: Identifiable, ObservableObject {
+    
+    let id = UUID()
 	let suit: Suit
 	let value: FaceValue
+    @Published var faceVisible = false
 	var image: String {
 		switch suit {
 			case .hearts:
@@ -31,6 +35,17 @@ struct CardData: Hashable {
 			return "SuitBlack"
 		}
 	}
+    
+    init(suit: Suit, value: FaceValue) {
+        self.suit = suit
+        self.value = value
+    }
+}
+
+extension Card: Equatable {
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 enum Suit: String, CaseIterable {

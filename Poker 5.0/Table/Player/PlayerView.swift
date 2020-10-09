@@ -19,7 +19,6 @@ struct PlayerView: View {
 				Text("\(player.name)")
 				Text("$\(player.chipCount)")
 			}
-			//TODO:- Need to add players cards here
 		}
     }
 }

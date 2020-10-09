@@ -11,8 +11,9 @@ import Combine
 
 struct GamePlayView: View {
 	
-	@ObservedObject var gamePlayModel: GamePlayModel
-	
+	@ObservedObject var tableModel: Table
+    @EnvironmentObject var gameModel: GamePlayModel
+    
 	var subscriptions = Set<AnyCancellable>()
 	
 	var seatedPlayers: [Player] = []
@@ -21,71 +22,67 @@ struct GamePlayView: View {
 		VStack {
 			ZStack {
 				HStack {
-					VStack(spacing: 30) {
-						if let player = gamePlayModel.getPlayer(forTablePosition: 4) {
+					VStack(spacing: 20) {
+                        if let player = tableModel.getPlayer(atTablePosition: 2) {
+                            CombinedPlayerView(player: player, location: .left)
+						}
+						Spacer()
+                        if let player = tableModel.getPlayer(atTablePosition: 3) {
 							CombinedPlayerView(player: player, location: .left)
 						}
 						Spacer()
-						if let player = gamePlayModel.getPlayer(forTablePosition: 2) {
-							CombinedPlayerView(player: player, location: .left)
-						}
-						Spacer()
-						if let player = gamePlayModel.getPlayer(forTablePosition: 7) {
+                        if let player = tableModel.getPlayer(atTablePosition: 4) {
 							CombinedPlayerView(player: player, location: .left)
 						}
 					}
 					Spacer()
 					VStack {
-						if let player = gamePlayModel.getPlayer(forTablePosition: 0) {
+                        if let player = tableModel.getPlayer(atTablePosition: 1) {
 							CombinedPlayerView(player: player, location: .top)
 						}
 						Spacer()
-						if let player = gamePlayModel.getPlayer(forTablePosition: 1) {
+                        if let player = tableModel.getPlayer(atTablePosition: 5) {
 							CombinedPlayerView(player: player, location: .bottom)
 						}
 					}
 					Spacer()
-					VStack(spacing: 30) {
-						if let player = gamePlayModel.getPlayer(forTablePosition: 6) {
+					VStack(spacing: 20) {
+                        if let player = tableModel.getPlayer(atTablePosition: 8) {
 							CombinedPlayerView(player: player, location: .right)
 						}
 						Spacer()
-						if let player = gamePlayModel.getPlayer(forTablePosition: 3) {
+                        if let player = tableModel.getPlayer(atTablePosition: 7) {
 							CombinedPlayerView(player: player, location: .right)
 						}
 						Spacer()
-						if let player = gamePlayModel.getPlayer(forTablePosition: 5) {
+                        if let player = tableModel.getPlayer(atTablePosition: 6) {
 							CombinedPlayerView(player: player, location: .right)
 						}
 					}
 				}.padding()
 				VStack {
-					Spacer(minLength: 150)
-					Text("Board(Card, Card, Card, Card, Card)")
-					Spacer(minLength: 5)
+					Spacer()
+                    BoardView(board: tableModel.cards, roundStage: .preFlop)
 					Text("Pot(can be multiple Pots)")
-					Spacer(minLength: 150)
-				}
-			}
-			VStack {
-				Spacer()
-				HStack {
-					Button(action: {self.gamePlayModel.butt()}, label: {
-						Text("Test player Publisher")
-					})
-					Text("Betting buttons")
+                    HStack {
+                        Button(action: {gameModel.butt()}, label: {
+                            Text("Cycle Board")
+                        })
+                        Button(action: {}, label: {Text("Flip card test")})
+                    }
+					Spacer()
 				}
 			}
 		}
     }
 }
 
-struct GamePlayView_Previews: PreviewProvider {
-    static var previews: some View {
-		GamePlayView(gamePlayModel: GamePlayModel(numberOfPlayers: 8, chipCount: 1000)).previewLayout(.fixed(width: 650, height: 375))
-		CombinedPlayerView(player: Player(name: "Dan", chipCount: 1000), location: .bottom)
-    }
-}
+//struct GamePlayView_Previews: PreviewProvider {
+//    static var previews: some View {
+//		GamePlayView(gamePlayModel: GamePlayModel(numberOfPlayers: 8, chipCount: 1000)).previewLayout(.fixed(width: 650, height: 375))
+//		CombinedPlayerView(player: Player(name: "Dan", chipCount: 1000), location: .right)
+//    }
+//}
 
 struct CombinedPlayerView: View {
 	
@@ -101,40 +98,96 @@ struct CombinedPlayerView: View {
 			VStack {
 				if location == .bottom {
 					VStack {
+                        if let bet = player.currentBet {
+                            Text("\(bet)")
+                        }
 						if player.markerType != .none {
 							MarkerView(markerType: player.markerType)
 						}
-						Text("Hand")
 					}
 				}
 				HStack {
 					if location == .right {
 						HStack {
+                            if let bet = player.currentBet {
+                                Text("\(bet)")
+                            }
 							if player.markerType != .none {
 								MarkerView(markerType: player.markerType)
 							}
-							Text("Hand")
+                            HandView(hand: player.hand, faceVisible: player.currentPlayer)
 						}
 					}
 					PlayerView(player: player)
-					if location == .left {
+                    if location != .right {
 						HStack {
-							Text("Hand")
-							if player.markerType != .none {
+                            HandView(hand: player.hand, faceVisible: player.currentPlayer)
+                            if player.markerType != .none && location == .left {
 								MarkerView(markerType: player.markerType)
 							}
+                            if let bet = player.currentBet {
+                                Text("\(bet)")
+                            }
 						}
 					}
 				}
 				if location == .top {
 					VStack {
-						Text("Hand")
 						if player.markerType != .none {
 							MarkerView(markerType: player.markerType)
 						}
+                        if let bet = player.currentBet {
+                            Text("\(bet)")
+                        }
 					}
 				}
 			}
 	}
 }
+
+
+struct HandView: View {
+    
+    var hand: [Card]
+    var faceVisible: Bool
+    var body: some View {
+        HStack {
+            ForEach(hand) { card in
+                CardView(card: card)
+            }
+        }
+    }
+}
+
+struct BoardView: View {
+    
+    var board: [Card]
+    var roundStage: HandStage
+    var numberOfCardsToShow: Int {
+        switch roundStage {
+        case .preFlop:
+            return 0
+        case .flop:
+            return 3
+        case .turn:
+            return 4
+        case .river:
+            return 5
+        }
+    }
+    
+    var body: some View {
+        HStack {
+            ForEach(board.prefix(numberOfCardsToShow)) { card in
+                CardView(card: toggleCardVisible(card: card))
+            }
+        }
+    }
+    
+    func toggleCardVisible(card: Card) -> Card {
+        card.faceVisible = true
+        return card
+    }
+}
+
 
