@@ -47,15 +47,27 @@ struct AppView: View {
 	
 	var setupView: some View {
 		VStack {
-			Stepper("Number of Players: \(viewModel.numberOfPlayers)", value: $viewModel.numberOfPlayers, in: 2...8)
+			Spacer()
+			Stepper("Number of Players: \(viewModel.numberOfPlayers)", value: $viewModel.numberOfPlayers, in: 2...8).padding()
+			HStack {
+				Text("Chips:")
+				Slider(value: $viewModel.playerStake, in: 500.0...10000.0, step: 50.0, onEditingChanged: { _ in })
+				Text("\(Int(viewModel.playerStake))")
+			}.padding()
+			HStack {
+				Text("Blinds:")
+				Slider(value: $viewModel.smallBlind, in: 10.0...viewModel.playerStake/2, step: 5.0, onEditingChanged: {_ in})
+				Text("\(Int(viewModel.smallBlind))/\(Int(viewModel.smallBlind * 2))")
+			}.padding()
 			Button(action: { self.viewModel.appState = .home}, label: {
 				Text("Cancel")
 			})
 			Button(action: {
-                    self.gameModel.startGame(numberOfPlayers: self.viewModel.numberOfPlayers, chipCount: 1000)
+					self.gameModel.startGame(numberOfPlayers: self.viewModel.numberOfPlayers, chipCount: Int(viewModel.playerStake), smallBlind: Int(viewModel.smallBlind))
                     self.viewModel.appState = .inGame}, label: {
 				Text("Start Game")
 			})
+			Spacer()
 		}
 	}
 	

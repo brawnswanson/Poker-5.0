@@ -13,8 +13,8 @@ class GamePlayModel: ObservableObject {
 	
     @Published var table = Table()
     
-    func startGame(numberOfPlayers: Int, chipCount:Int) {
-        table.setupGame(numberOfPlayers: numberOfPlayers, withChipCount: chipCount)
+	func startGame(numberOfPlayers: Int, chipCount:Int, smallBlind: Int) {
+        table.setupGame(numberOfPlayers: numberOfPlayers, withChipCount: chipCount, smallBlind: smallBlind)
         table.startHand()
     }
     

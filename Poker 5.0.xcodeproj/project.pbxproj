@@ -23,6 +23,7 @@
 		C44896002523ABE1002D7909 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44895FF2523ABE1002D7909 /* PlayerView.swift */; };
 		C44896032523AD8E002D7909 /* GamePlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44896022523AD8E002D7909 /* GamePlayView.swift */; };
 		C448960B2525F114002D7909 /* MarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C448960A2525F114002D7909 /* MarkerView.swift */; };
+		C490D76D25309A17000089C1 /* BetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C490D76C25309A17000089C1 /* BetView.swift */; };
 		C4D880DB252F53DB00F49088 /* Table.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D880DA252F53DB00F49088 /* Table.swift */; };
 		C4D880DF253081FC00F49088 /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D880DE253081FC00F49088 /* Deck.swift */; };
 		C4D880E4253082F600F49088 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D880E3253082F600F49088 /* Hand.swift */; };
@@ -48,8 +49,9 @@
 		C44895EE2523A6E6002D7909 /* GamePlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayModel.swift; sourceTree = "<group>"; };
 		C44895F32523A761002D7909 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		C44895FF2523ABE1002D7909 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
-		C44896022523AD8E002D7909 /* GamePlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayView.swift; sourceTree = "<group>"; };
+		C44896022523AD8E002D7909 /* GamePlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePlayView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C448960A2525F114002D7909 /* MarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkerView.swift; sourceTree = "<group>"; };
+		C490D76C25309A17000089C1 /* BetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetView.swift; sourceTree = "<group>"; };
 		C4D880DA252F53DB00F49088 /* Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Table.swift; sourceTree = "<group>"; };
 		C4D880DE253081FC00F49088 /* Deck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		C4D880E3253082F600F49088 /* Hand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
@@ -157,6 +159,15 @@
 			path = Marker;
 			sourceTree = "<group>";
 		};
+		C490D76B25309A07000089C1 /* Betting */ = {
+			isa = PBXGroup;
+			children = (
+				C4D880EF2530867500F49088 /* Bet.swift */,
+				C490D76C25309A17000089C1 /* BetView.swift */,
+			);
+			path = Betting;
+			sourceTree = "<group>";
+		};
 		C4D880D9252F53C500F49088 /* Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,7 +185,7 @@
 				C4D880E3253082F600F49088 /* Hand.swift */,
 				C4D880E62530830A00F49088 /* BettingRound.swift */,
 				C4D880E92530831E00F49088 /* Pot.swift */,
-				C4D880EF2530867500F49088 /* Bet.swift */,
+				C490D76B25309A07000089C1 /* Betting */,
 			);
 			path = Hand;
 			sourceTree = "<group>";
@@ -268,6 +279,7 @@
 				C4D880E72530830A00F49088 /* BettingRound.swift in Sources */,
 				C41E6E1D2522FFAB00600191 /* SceneDelegate.swift in Sources */,
 				C41E6E1F2522FFAB00600191 /* ContentView.swift in Sources */,
+				C490D76D25309A17000089C1 /* BetView.swift in Sources */,
 				C44895F42523A761002D7909 /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

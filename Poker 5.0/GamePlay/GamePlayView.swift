@@ -22,7 +22,7 @@ struct GamePlayView: View {
 		VStack {
 			ZStack {
 				HStack {
-					VStack(spacing: 20) {
+					VStack(spacing: 0) {
                         if let player = tableModel.getPlayer(atTablePosition: 2) {
                             CombinedPlayerView(player: player, location: .left)
 						}
@@ -95,56 +95,84 @@ struct CombinedPlayerView: View {
 	
 	
 	var body: some View {
-			VStack {
-				if location == .bottom {
-					VStack {
-                        if let bet = player.currentBet {
-                            Text("\(bet)")
-                        }
-						if player.markerType != .none {
-							MarkerView(markerType: player.markerType)
-						}
+		VStack {
+			if location == .bottom {
+				VStack {
+					if let bet = player.currentBet {
+						Text("\(bet)").font(.caption)
 					}
-				}
-				HStack {
-					if location == .right {
-						HStack {
-                            if let bet = player.currentBet {
-                                Text("\(bet)")
-                            }
-							if player.markerType != .none {
-								MarkerView(markerType: player.markerType)
-							}
-                            HandView(hand: player.hand, faceVisible: player.currentPlayer)
-						}
-					}
-					PlayerView(player: player)
-                    if location != .right {
-						HStack {
-                            HandView(hand: player.hand, faceVisible: player.currentPlayer)
-                            if player.markerType != .none && location == .left {
-								MarkerView(markerType: player.markerType)
-							}
-                            if let bet = player.currentBet {
-                                Text("\(bet)")
-                            }
-						}
-					}
-				}
-				if location == .top {
-					VStack {
-						if player.markerType != .none {
-							MarkerView(markerType: player.markerType)
-						}
-                        if let bet = player.currentBet {
-                            Text("\(bet)")
-                        }
+					if player.markerType != .none {
+						MarkerView(markerType: player.markerType)
 					}
 				}
 			}
+			HStack {
+				if location == .right {
+					HStack {
+						if let bet = player.currentBet {
+							Text("\(bet)").font(.caption)
+						}
+						if player.markerType != .none {
+							MarkerView(markerType: player.markerType)
+						}
+						HandView(hand: player.hand, faceVisible: player.currentPlayer)
+					}
+				}
+				PlayerView(player: player)
+				if location != .right {
+					HStack {
+						HandView(hand: player.hand, faceVisible: player.currentPlayer)
+						if player.markerType != .none && location == .left {
+							MarkerView(markerType: player.markerType)
+						}
+						if let bet = player.currentBet {
+							Text("\(bet)").font(.caption)
+						}
+					}
+				}
+			}
+			if location == .top {
+				VStack {
+					if player.markerType != .none {
+						MarkerView(markerType: player.markerType)
+					}
+					if let bet = player.currentBet {
+						Text("\(bet)").font(.caption)
+					}
+				}
+			}
+		}.modifier(Current(visible: player.currentPlayer)).onTapGesture(count: 1, perform: {
+			print("Tap")
+		})
+	}
+	//TODO:- need to move bets on sides to above and/or below players in corners. maybe the middle can stay to the right.
+	//TODO:- does the current player frame need padding inside?
+	//TODO:- design betting popover window
+	//TODO:- make seating positioning more dynamic somehow
+	func current(visible: Bool) -> some View {
+		self.modifier(Current(visible: visible))
 	}
 }
 
+extension CombinedPlayerView {
+	
+}
+
+struct Current: ViewModifier {
+	
+	let visible: Bool
+	
+	func body(content: Content) -> some View {
+		if visible {
+			return AnyView(content.border(Color.black, width: 1))
+		}
+		else {
+			return AnyView(content)
+		}
+	}
+	
+	
+}
 
 struct HandView: View {
     
@@ -191,3 +219,9 @@ struct BoardView: View {
 }
 
 
+
+struct GamePlayView_Previews: PreviewProvider {
+	static var previews: some View {
+		/*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+	}
+}

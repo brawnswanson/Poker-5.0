@@ -12,4 +12,14 @@ class BettingRound {
     var currentBet: Int = 0
     var bets: [Bet] = []
     var totalPot: Int = 0
+	var lastRaise: Int = 0
+	
+	init() {
+		
+	}
+	
+	init(withSmallBlind amount: Int) {
+		
+	}
+	
 }

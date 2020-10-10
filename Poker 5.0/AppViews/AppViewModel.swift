@@ -17,6 +17,14 @@ class AppViewModel: ObservableObject {
 		}
 	}
 	@Published var numberOfPlayers: Int = 2
+	@Published var playerStake: Float = 1000 {
+		willSet {
+			if smallBlind * 2 > newValue {
+				smallBlind = newValue / 2
+			}
+		}
+	}
+	@Published var smallBlind: Float = 5
 }
 
 enum AppStates {

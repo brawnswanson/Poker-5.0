@@ -24,8 +24,10 @@ class Table: ObservableObject {
     var buttonPlayer: Player?
     var currentPlayer: Player?
     let tablePositions: [Int] = [1,5,3,7,8,4,2,6]
+	var smallBlind: Int = 0
     
-    func setupGame(numberOfPlayers: Int, withChipCount: Int) {
+	func setupGame(numberOfPlayers: Int, withChipCount: Int, smallBlind: Int) {
+		self.smallBlind = smallBlind
         players.generate(numberOfRandomPlayers: numberOfPlayers, withChipCount: withChipCount)
         seatPlayers()
         setInitialMarkers()
@@ -33,6 +35,13 @@ class Table: ObservableObject {
     
     func startHand() {
         clearCardsFromTable()
+		if let player = smallBlindPlayer {
+			player.currentBet = smallBlind
+		}
+		if let player = bigBlindPlayer {
+			player.currentBet = smallBlind * 2
+		}
+		//TODO:- take blinds from players to start the betting
         shuffleAndDeal()
         
         print("let's go!")

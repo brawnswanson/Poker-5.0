@@ -12,7 +12,8 @@ class Hand {
     
     var pots: [Pot] = []
     var bettingRounds: [BettingRound] = []
-    
+	var handStage: HandStage = .preFlop
+	
     init(currentSmallBlind: Int) {
         
     }

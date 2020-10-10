@@ -15,7 +15,7 @@ class Player: ObservableObject, Identifiable, Equatable {
 	
 	let id = UUID()
 	let name: String
-	var chipCount: Int
+	@Published var chipCount: Int
     @Published var hand: [Card] = [] {
         didSet {
             if currentPlayer == true {
@@ -31,7 +31,13 @@ class Player: ObservableObject, Identifiable, Equatable {
 	@Published var folded = false
 	@Published var disconnected = false
 	@Published var outOfGame = false
-    @Published var currentBet: Int?
+	@Published var currentBet: Int? {
+		didSet {
+			if let bet = currentBet {
+				chipCount -= bet
+			}
+		}
+	}
     
 	
 	init(name: String, chipCount: Int) {
@@ -55,6 +61,5 @@ class Players: ObservableObject {
             let newPlayer = Player(name: names.randomElement()!, chipCount: amount)
             allPlayers.append(newPlayer)
         }
-    }
-    
+	}
 }
